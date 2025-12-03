@@ -59,7 +59,6 @@ def upload_campaign(request):
 
             messages.success(request, f"Campaign '{campaign.title}' created successfully!")
             return redirect('campaign_detail', campaign.id)
-
     else:
         form = UploadRecipientsForm()
 
@@ -75,7 +74,6 @@ def campaign_detail(request, campaign_id):
     failed_count = recipients.filter(status='Failed').count()
     pending_count = recipients.filter(status='Pending').count()
 
-    # 🔥 Added 3 safe percentage values
     sent_pct = int((sent_count / total) * 100) if total else 0
     failed_pct = int((failed_count / total) * 100) if total else 0
     pending_pct = int((pending_count / total) * 100) if total else 0
@@ -87,17 +85,14 @@ def campaign_detail(request, campaign_id):
         'sent_count': sent_count,
         'failed_count': failed_count,
         'pending_count': pending_count,
-
-        # 🔥 Pass these to template
         'sent_pct': sent_pct,
         'failed_pct': failed_pct,
         'pending_pct': pending_pct,
     })
 
 
-
 def _send_emails_in_thread(campaign_id):
-    """This function will run in a separate thread to send emails."""
+    """Run in a separate thread to send emails."""
     campaign = get_object_or_404(Campaign, id=campaign_id)
     recipients = campaign.recipients.filter(status='Pending')
 
@@ -107,7 +102,7 @@ def _send_emails_in_thread(campaign_id):
             send_mail(
                 subject=campaign.subject,
                 message=msg,
-                from_email='bulkmailer@example.com',  # your sender email
+                from_email='bulkmailer@example.com',
                 recipient_list=[r.email],
                 fail_silently=False
             )
@@ -123,10 +118,10 @@ def _send_emails_in_thread(campaign_id):
 
 @require_POST
 def send_campaign(request, campaign_id):
-    """Initiates the sending of a campaign in a background thread."""
+    """Send campaign emails in background thread."""
     campaign = get_object_or_404(Campaign, id=campaign_id)
     with transaction.atomic():
-        # Reset failed emails to pending so they can be retried
+        # Reset failed emails to pending for retry
         campaign.recipients.filter(status='Failed').update(status='Pending', error_message='')
 
     thread = threading.Thread(target=_send_emails_in_thread, args=(campaign_id,))
@@ -135,24 +130,32 @@ def send_campaign(request, campaign_id):
 
 
 def campaign_status_api(request, campaign_id):
-    """Return live status of campaign"""
+    """Return live status of campaign."""
     campaign = get_object_or_404(Campaign, id=campaign_id)
     recipients = campaign.recipients.all()
 
-    total = recipients.count()
-    sent = recipients.filter(status='Sent').count()
-    failed = recipients.filter(status='Failed').count()
-    pending = recipients.filter(status='Pending').count()
-
     return JsonResponse({
-        "total": total,
-        "sent": sent,
-        "failed": failed,
-        "pending": pending,
+        "total": recipients.count(),
+        "sent": recipients.filter(status='Sent').count(),
+        "failed": recipients.filter(status='Failed').count(),
+        "pending": recipients.filter(status='Pending').count(),
         "recipients": list(recipients.values('id', 'name', 'email', 'status'))
     })
 
 
 def campaign_list(request):
+    """Show all campaigns."""
     campaigns = Campaign.objects.all().order_by('-created_at')
-    return render(request, 'bulk/campaign_list.html', {'campaigns': campaigns})
+
+    campaign_data = []
+    for c in campaigns:
+        recipients = c.recipients.all()
+        campaign_data.append({
+            'campaign': c,
+            'total': recipients.count(),
+            'sent': recipients.filter(status='Sent').count(),
+            'failed': recipients.filter(status='Failed').count(),
+            'pending': recipients.filter(status='Pending').count(),
+        })
+
+    return render(request, 'bulk/campaign_list.html', {'campaign_data': campaign_data})

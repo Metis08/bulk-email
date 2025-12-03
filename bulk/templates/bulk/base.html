@@ -13,31 +13,29 @@
 <body>
     <!-- Navbar / Header -->
     <nav class="navbar navbar-expand-lg px-5" 
-     style="background-color:rgb(0, 49, 99); color: white; min-height: 100px;">
+         style="background-color:rgb(0, 49, 99); color: white; min-height: 100px;">
 
         <div class="container">
-            <a class="navbar-brand text-white "  style="font-size: 1.7rem;" href="{% url 'index' %}">BulkMailer</a>
+            <a class="navbar-brand text-white" style="font-size: 1.7rem;" href="{% url 'index' %}">BulkMailer</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-white" style="font-size: 1.5rem;" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" style="font-size: 1.5rem;" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" style="font-size: 1.5rem;" href="#">Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" style="font-size: 1.5rem;" href="{% url 'campaign_list' %}">
-                        Campaigns
-                    </a>
-                </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link text-white" style="font-size: 1.5rem;" href="{% url 'index' %}#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" style="font-size: 1.5rem;" href="{% url 'index' %}#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" style="font-size: 1.5rem;" href="{% url 'index' %}#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" style="font-size: 1.5rem;" href="{% url 'campaign_list' %}">Campaigns</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -60,15 +58,31 @@
             {% endfor %}
         </div>
         {% endif %}
-
     </main>
 
     <!-- Footer -->
     <footer style="background-color:rgb(0, 49, 99); color: white; width: 100%; text-align: center; padding: 15px 0; ">
-    &copy; 2025 BulkMailer. All rights reserved.
+        &copy; 2025 BulkMailer. All rights reserved.
     </footer>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Smooth Scroll Script -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('a.nav-link[href*="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if(this.hash && this.pathname === window.location.pathname) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.hash);
+                    if(target){
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+    });
+    </script>
 </body>
 </html>

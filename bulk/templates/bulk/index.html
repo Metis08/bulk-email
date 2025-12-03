@@ -4,8 +4,7 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="bg-dark text-white text-center" style="padding: 400px 0;">
-
+<section id="home" class="bg-dark text-white text-center" style="padding: 400px 0;">
     <div class="container">
         <h1 class="display-4" style="font-size: 4rem; font-weight: 800;">Send Personalized Emails in Bulk</h1>
         <p class="lead mt-3" style="font-size: 1.8rem;">Reach hundreds of people with personalized emails quickly and efficiently!</p>
@@ -23,15 +22,13 @@
         ">
             Start a Campaign
         </a>
-
-
     </div>
 </section>
 
 <!-- Features Section -->
-<section class="bg-dark text-white" style="padding: 200px 0;">
+<section id="features" class="bg-dark text-white" style="padding: 200px 0;">
     <div class="text-center mb-5">
-            <h2 class="display-5" style="font-size: 4rem; font-weight: 800;">Why Choose Our Bulk Emailer?</h2>
+        <h2 class="display-5" style="font-size: 4rem; font-weight: 800;">Why Choose Our Bulk Emailer?</h2>
     </div>
     <div class="container">
         <div class="row text-center">
@@ -45,7 +42,6 @@
             </div>
             
             <div class="col-md-4 mb-4">
-            
                 <div class="card border-0 shadow-sm" style="min-height: 250px; display: flex; align-items: center; justify-content: center; background-color:rgb(4, 59, 114); color: white;">
                     <div class="card-body d-flex flex-column justify-content-center align-items-center text-center" style="height: 100%;">
                         <h4 class="card-title" style="font-size: 1.8rem; font-weight: bold;">Personalized Email</h4>
@@ -56,12 +52,20 @@
             
             <div class="col-md-4 mb-4">
                 <div class="card border-0 shadow-sm" style="min-height: 250px; display: flex; align-items: center; justify-content: center; background-color:rgb(4, 59, 114); color: white;">
-                        <h4 class="card-title" style="font-size: 1.8rem; font-weight: bold;">Track Progress</h4>
-                        <p class="card-text">Monitor who received emails and check campaign progress</p>
-                    </div>
+                    <h4 class="card-title" style="font-size: 1.8rem; font-weight: bold;">Track Progress</h4>
+                    <p class="card-text">Monitor who received emails and check campaign progress</p>
                 </div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="bg-dark text-white" style="padding: 200px 0;">
+    <div class="container text-center">
+        <h2 class="display-5" style="font-size: 4rem; font-weight: 800;">Contact Us</h2>
+        <p style="font-size:1.5rem;">Email: support@bulkmailer.com</p>
+        <p style="font-size:1.5rem;">Phone: +91 12345 67890</p>
     </div>
 </section>
 
@@ -69,7 +73,7 @@
 <section class="bg-dark text-white" style="padding: 200px 0;">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="display-5" style="font-size: 4rem; font-weight: 800;">Ready to Start Your First Campaign?<</h2>
+            <h2 class="display-5" style="font-size: 4rem; font-weight: 800;">Ready to Start Your First Campaign?</h2>
         </div>
         <div class="text-center">
             <a href="{% url 'upload_campaign' %}" 
@@ -84,8 +88,6 @@
                ">
                 Upload Recipients
             </a>
-
-
         </div>
     </div>
 </section>
