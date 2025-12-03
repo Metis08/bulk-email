@@ -1,0 +1,56 @@
+{% extends 'bulk/base.html' %}
+
+{% block title %}Upload Campaign{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Create a New Campaign</h2>
+
+    <!-- Show Success / Error Messages -->
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+            <div class="alert alert-success text-center" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+    <!-- Upload Campaign Form -->
+    <form method="POST" enctype="multipart/form-data" class="p-4 shadow-lg bg-dark text-white rounded">
+        {% csrf_token %}
+
+        <!-- Campaign Title -->
+        <div class="mb-3">
+            <label class="form-label">Campaign Title</label>
+            <input type="text" name="title" class="form-control" placeholder="Enter campaign title" required>
+        </div>
+
+        <!-- Subject -->
+        <div class="mb-3">
+            <label class="form-label">Email Subject</label>
+            <input type="text" name="subject" class="form-control" placeholder="Enter email subject" required>
+        </div>
+
+        <!-- Message -->
+        <div class="mb-3">
+            <label class="form-label">Email Message</label>
+            <textarea name="message" class="form-control" rows="6"
+                placeholder="Write your message. Use {{name}} to personalize."
+                required></textarea>
+        </div>
+
+        <!-- File Upload -->
+        <div class="mb-3">
+            <label class="form-label">Upload CSV/Excel</label>
+            <input type="file" name="file" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-lg w-100" style="background-color: rgb(4,59,114); color:white;">
+            Upload & Create Campaign
+        </button>
+    </form>
+</div>
+{% endblock %}

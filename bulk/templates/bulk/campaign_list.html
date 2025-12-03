@@ -1,0 +1,48 @@
+{% extends 'bulk/base.html' %}
+{% block title %}All Campaigns{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-white">
+    <h2>All Campaigns</h2>
+    <a href="{% url 'upload_campaign' %}" class="btn btn-primary mb-3">Create New Campaign</a>
+
+    <div class="table-responsive">
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Total Recipients</th>
+                    <th>Sent</th>
+                    <th>Failed</th>
+                    <th>Pending</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in campaign_data %}
+                <tr>
+                    <td>{{ data.campaign.title }}</td>
+                    <td>{{ data.total }}</td>
+                    <td>{{ data.sent }}</td>
+                    <td>{{ data.failed }}</td>
+                    <td>{{ data.pending }}</td>
+                    <td>
+                        <a href="{% url 'campaign_detail' data.campaign.id %}" class="btn btn-sm btn-info">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+        <div class="alert alert-success text-center" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

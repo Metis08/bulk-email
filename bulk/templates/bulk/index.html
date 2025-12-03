@@ -1,0 +1,92 @@
+{% extends 'bulk/base.html' %}
+
+{% block title %}Welcome to BulkMailer{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-dark text-white text-center" style="padding: 400px 0;">
+
+    <div class="container">
+        <h1 class="display-4" style="font-size: 4rem; font-weight: 800;">Send Personalized Emails in Bulk</h1>
+        <p class="lead mt-3" style="font-size: 1.8rem;">Reach hundreds of people with personalized emails quickly and efficiently!</p>
+        <a href="{% url 'upload_campaign' %}" 
+            class="mt-4"
+            style="
+                background-color: rgb(4, 59, 114); 
+                color: white; 
+                padding: 15px 35px; 
+                border-radius: 8px; 
+                text-decoration: none; 
+                font-weight: bold; 
+                display: inline-block; 
+                font-size: 1.3rem;
+        ">
+            Start a Campaign
+        </a>
+
+
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="bg-dark text-white" style="padding: 200px 0;">
+    <div class="text-center mb-5">
+            <h2 class="display-5" style="font-size: 4rem; font-weight: 800;">Why Choose Our Bulk Emailer?</h2>
+    </div>
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm" style="min-height: 250px; display: flex; align-items: center; justify-content: center; background-color:rgb(4, 59, 114); color: white;">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center text-center" style="height: 100%;">
+                        <h4 class="card-title" style="font-size: 1.8rem; font-weight: bold;">Easy Upload</h4>
+                        <p class="card-text">Upload CSV or Excel with your recipient list in seconds.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+            
+                <div class="card border-0 shadow-sm" style="min-height: 250px; display: flex; align-items: center; justify-content: center; background-color:rgb(4, 59, 114); color: white;">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center text-center" style="height: 100%;">
+                        <h4 class="card-title" style="font-size: 1.8rem; font-weight: bold;">Personalized Email</h4>
+                        <p class="card-text">Use placeholders like {{name}} to personalize each email.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm" style="min-height: 250px; display: flex; align-items: center; justify-content: center; background-color:rgb(4, 59, 114); color: white;">
+                        <h4 class="card-title" style="font-size: 1.8rem; font-weight: bold;">Track Progress</h4>
+                        <p class="card-text">Monitor who received emails and check campaign progress</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="bg-dark text-white" style="padding: 200px 0;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5" style="font-size: 4rem; font-weight: 800;">Ready to Start Your First Campaign?<</h2>
+        </div>
+        <div class="text-center">
+            <a href="{% url 'upload_campaign' %}" 
+               class="btn btn-lg mt-3"
+               style="
+                   background-color: rgb(4, 59, 114); 
+                   color: white; 
+                   border: none; 
+                   padding: 15px 35px; 
+                   border-radius: 8px; 
+                   font-size: 1.3rem;
+               ">
+                Upload Recipients
+            </a>
+
+
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends 'bulk/base.html' %}
+{% block title %}Campaign Details{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-white">
+    <h2>{{ campaign.title }}</h2>
+    <p><strong>Subject:</strong> {{ campaign.subject }}</p>
+    <p><strong>Message:</strong> {{ campaign.message }}</p>
+
+    <!-- Email Stats -->
+    <div class="mb-4">
+        <p>Total Recipients: {{ total }}</p>
+        <p>Sent: {{ sent_count }} | Failed: {{ failed_count }} | Pending: {{ pending_count }}</p>
+
+        <!-- Progress Bar -->
+        <div class="progress" style="height: 25px;">
+            {% if total > 0 %}
+            <div class="progress-bar bg-success"
+                 role="progressbar"
+                 style="width: {{ sent_pct }}%;">
+                Sent {{ sent_count }}
+            </div>
+        
+            <div class="progress-bar bg-danger"
+                 role="progressbar"
+                 style="width: {{ failed_pct }}%;">
+                Failed {{ failed_count }}
+            </div>
+        
+            <div class="progress-bar bg-secondary"
+                 role="progressbar"
+                 style="width: {{ pending_pct }}%;">
+                Pending {{ pending_count }}
+            </div>
+            {% endif %}
+        </div>
+
+
+    </div>
+
+    <!-- Send Emails Button -->
+    <form method="POST" action="{% url 'send_campaign_emails' campaign.id %}">
+        {% csrf_token %}
+        <div class="text-center mb-4">
+            <button id="send-btn" class="btn btn-lg" style="background-color: rgb(4,59,114); color: white; font-weight: bold;">
+                Send Emails
+            </button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress mb-3" style="height: 25px; display:none;" id="progress-container">
+            <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                role="progressbar" style="width: 0%">0%</div>
+        </div>
+
+        <div id="result" class="text-center mt-2"></div>
+
+        <script>
+        document.getElementById('send-btn').addEventListener('click', function() {
+            const button = this;
+            button.disabled = true;
+
+            const progressContainer = document.getElementById('progress-container');
+            const progressBar = document.getElementById('progress-bar');
+            const resultDiv = document.getElementById('result');
+
+            progressContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            resultDiv.textContent = '';
+
+            fetch("{% url 'send_campaign_emails' campaign.id %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Accept': 'application/json'
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                const { total, sent, failed } = data;
+                const percent = Math.round((sent + failed) / total * 100);
+                progressBar.style.width = percent + '%';
+                progressBar.textContent = percent + '%';
+
+                resultDiv.innerHTML = `
+                    <p>Total: ${total}</p>
+                    <p>Sent: ${sent}</p>
+                    <p>Failed: ${failed}</p>
+                `;
+            })
+            .then(() => {
+                // Reload after 1 second
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            })
+
+            .catch(error => {
+                resultDiv.textContent = 'Error sending emails!';
+                console.error(error);
+            });
+        });
+        </script>
+    </form>
+
+    <hr>
+
+    <!-- Recipients Table -->
+    <h3 class="mb-3">Recipients</h3>
+    <div class="table-responsive">
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in recipients %}
+                <tr>
+                    <td>{{ r.name }}</td>
+                    <td>{{ r.email }}</td>
+                    <td>{{ r.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+        <div class="alert alert-success text-center" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}
