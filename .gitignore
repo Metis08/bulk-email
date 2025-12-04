@@ -1,0 +1,17 @@
+# Ignore Django secret settings
+mail/settings.py
+
+# Ignore sensitive environment files
+.env
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore SQLite database
+db.sqlite3
+
+# Ignore static files collected
+/staticfiles/
+
+/media/
