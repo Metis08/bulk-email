@@ -3,54 +3,112 @@
 {% block title %}Upload Campaign{% endblock %}
 
 {% block content %}
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        color:white;
+        backdrop-filter: blur(12px);
+        border-radius: 16px;
+        padding: 35px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .glass-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    }
+
+    .form-control {
+        background: rgba(255,255,255,0.1) !important;
+        border: none !important;
+        color: white !important;
+    }
+        /* Make placeholder text visible on dark background */
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.65) !important;
+    }
+    
+    textarea.form-control::placeholder {
+        color: rgba(255, 255, 255, 0.65) !important;
+    }
+
+
+    .form-control:focus {
+        background: rgba(255,255,255,0.15) !important;
+        box-shadow: 0 0 5px rgba(255,255,255,0.3) !important;
+    }
+
+    label {
+        font-weight: 600;
+        letter-spacing: 0.3px;
+    }
+
+    .btn-main {
+        background-color: rgb(4,59,114);
+        color: white;
+        font-size: 1.2rem;
+        padding: 12px;
+        border-radius: 10px;
+        transition: 0.3s ease;
+    }
+
+    .btn-main:hover {
+        background-color: rgb(3, 47, 95);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+        color: rgb(255, 255, 255);
+        font-weight: 700;
+        letter-spacing: 0.8px;
+    }
+</style>
+
+
 <div class="container mt-5">
     <h2 class="text-center mb-4">Create a New Campaign</h2>
 
-    <!-- Show Success / Error Messages -->
     {% if messages %}
-    <div class="container mt-3">
-        {% for message in messages %}
-            <div class="alert alert-success text-center" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-success text-center" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
     {% endif %}
 
+    <div class="glass-card mx-auto mt-4" style="max-width: 650px;">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-    <!-- Upload Campaign Form -->
-    <form method="POST" enctype="multipart/form-data" class="p-4 shadow-lg bg-dark text-white rounded">
-        {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Campaign Title</label>
+                <input type="text" name="title" class="form-control" placeholder="Enter campaign title" required>
+            </div>
 
-        <!-- Campaign Title -->
-        <div class="mb-3">
-            <label class="form-label">Campaign Title</label>
-            <input type="text" name="title" class="form-control" placeholder="Enter campaign title" required>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">Email Subject</label>
+                <input type="text" name="subject" class="form-control" placeholder="Enter email subject" required>
+            </div>
 
-        <!-- Subject -->
-        <div class="mb-3">
-            <label class="form-label">Email Subject</label>
-            <input type="text" name="subject" class="form-control" placeholder="Enter email subject" required>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">Email Message</label>
+                <textarea name="message" class="form-control" rows="6"
+                    placeholder="Write your message. Use {{name}} to personalize." required></textarea>
+            </div>
 
-        <!-- Message -->
-        <div class="mb-3">
-            <label class="form-label">Email Message</label>
-            <textarea name="message" class="form-control" rows="6"
-                placeholder="Write your message. Use {{name}} to personalize."
-                required></textarea>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">Upload CSV/Excel</label>
+                <input type="file" name="file" class="form-control" required>
+            </div>
 
-        <!-- File Upload -->
-        <div class="mb-3">
-            <label class="form-label">Upload CSV/Excel</label>
-            <input type="file" name="file" class="form-control" required>
-        </div>
-
-        <button type="submit" class="btn btn-lg w-100" style="background-color: rgb(4,59,114); color:white;">
-            Upload & Create Campaign
-        </button>
-    </form>
+            <button type="submit" class="btn btn-main w-100 mt-3">
+                Upload & Create Campaign
+            </button>
+        </form>
+    </div>
 </div>
 {% endblock %}
